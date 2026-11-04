@@ -128,7 +128,7 @@ namespace ZenTimings.Export
 
             var readings = new SnapshotObject();
             readings.Add("sampled_at", source.LastRefreshUtc.HasValue ? FormatUtc(source.LastRefreshUtc.Value) : null);
-            readings.Add("stale", !source.AutoRefreshActive);
+            readings.Add("stale", !source.AutoRefreshActive && !source.SynchronousCapture);
             int readingsHeader = readings.Count;
 
             if (options.Has(SnapshotSections.PowerTable))
@@ -143,7 +143,7 @@ namespace ZenTimings.Export
             if (readings.Count > readingsHeader)
             {
                 root.Add("readings", readings);
-                if (!source.AutoRefreshActive)
+                if (!source.AutoRefreshActive && !source.SynchronousCapture)
                     Missing("readings", "stale", "auto refresh is off, values are from the last refresh");
             }
 

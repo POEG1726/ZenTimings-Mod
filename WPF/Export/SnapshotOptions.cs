@@ -59,5 +59,9 @@ namespace ZenTimings.Export
         public DateTime? LastRefreshUtc { get; set; }
 
         public bool AutoRefreshActive { get; set; }
+
+        // A one-shot CLI capture refreshed these values synchronously. The GUI
+        // default remains false, preserving its existing stale-data behavior.
+        public bool SynchronousCapture { get; set; }
     }
 }

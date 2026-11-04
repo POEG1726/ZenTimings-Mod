@@ -1,0 +1,22 @@
+name: Headless offline verification
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  headless:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: ./CLI/Prepare-BuildTools.ps1
+      - run: ./CLI/Build-Headless.ps1 -NativeDll artifacts/upstream_v142.713/inpoutx64.dll
+      - run: python -m unittest discover -s CLI -p test_headless.py -v
